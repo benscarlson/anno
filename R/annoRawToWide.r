@@ -1,16 +1,19 @@
-
+#' @importFrom glue glue
+#' @importFrom readr read_csv
+#' @export
 annoRawToWide <- function(datName) {
 
-
-  if(FALSE) {datName <- 'lbgshy_sub'}
   #if splitting up annotation of an single variable (i.e. EVI) into multiple runs/files, can still
   #just run this code, because all files are just stacked on top of each other.
 
-  scratchP <- file.path(.annoP,glue('anno_{datName}')) #path of temporary files used in annotation
+  #---- common variable header ----#
+  scratchP <- glue('tempfolder_{datName}') #path of temporary files used in annotation
   rawP <- 'raw'
+  #---- ----#
 
   message(glue('Reading files from {file.path(scratchP,rawP)}'))
   rawFiles <- list.files(file.path(scratchP,rawP),full.names=TRUE)
+  message('Found the following raw files...')
   print(rawFiles)
 
   colTypes = cols(`system:index`=col_skip(),

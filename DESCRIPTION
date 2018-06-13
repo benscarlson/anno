@@ -12,8 +12,10 @@ LazyData: true
 Imports:
   dplyr,
   glue,
+  magrittr,
   readr,
   rgdal,
   sp,
-  tidyr
-  
+  tidyr,
+  tibble
+RoxygenNote: 6.0.1

@@ -4,28 +4,17 @@
 #   datName_original.csv the original data
 #   raw/ contains raw results from gee
 #   shp/datName where the shapefile is written to
-
+#' @export
 prepForGEE <- function(dat,datName,ptsPerGrpReq=NULL,extraFields=NULL) {
+  #not supposed to do this inside a package, but can't get any of the suggested methods to work
+  require(dplyr)
+  require(glue)
+  require(rgdal)
+  require(sp)
 
-  # if(FALSE) {
-  #   datName='test_beu';
-  #   ptsPerGrpReq=20;
-  #   extraFields=c('obs','short_name')
-  #   .annoP <- '/Users/benc/projects/annorun/data'
-  #   dat <- read_csv(file.path(.annoP,'test_beu.csv'))
-  # }
-
-  #User picks a directory to run this script from
-  #Temporary scaffolding code
-  # if(interactive()) {
-  #
-  # } else {
-  #   .annoP <- getwd()
-  # }
-
-  scratchP <- glue('anno_{datName}') #path of temporary files used in annotation
+  scratchP <- glue::glue('tempfolder_{datName}') #path of temporary files used in annotation
   shapeP <- file.path('shp',datName) #path of shapefile
-  datCopyFN <- glue('{datName}_original.csv') #file name for copy of original file
+  datCopyFN <- glue::glue('{datName}_original.csv') #file name for copy of original file
 
   defaultFields <- c('anno_id','lon','lat','timestamp')
   uploadFields <- c(defaultFields,extraFields)
@@ -51,7 +40,7 @@ prepForGEE <- function(dat,datName,ptsPerGrpReq=NULL,extraFields=NULL) {
 
     dat$anno_grp <- anno_grp
     uploadFields <- c('anno_grp',uploadFields)
-    message(glue('Number of groups is {numGrps}'))
+    message(glue::glue('Number of groups is {numGrps}'))
   }
 
   #----
@@ -82,5 +71,5 @@ prepForGEE <- function(dat,datName,ptsPerGrpReq=NULL,extraFields=NULL) {
   dir.create(file.path(scratchP,shapeP),recursive=TRUE,showWarnings=FALSE)
   writeOGR(obj=trsp, dsn=file.path(scratchP,shapeP), layer=datName, driver="ESRI Shapefile", overwrite_layer = TRUE)
 
-  message(glue('Shapefile written to {file.path(scratchP,shapeP)}'))
+  message(glue::glue('Shapefile written to {file.path(getwd(),scratchP,shapeP)}'))
 }
