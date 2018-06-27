@@ -18,40 +18,18 @@ transMODIS_EVI <- function(raw) {
 }
 
 # processes raw GEE output
-# looks for the original dataset. If found, joins anno data to this dataset
-# returns a list that contains the dataset and a vector of environmental variable labels
 #' @importFrom glue glue
 #' @importFrom readr read_csv
 #' @import dplyr
 #' @import tidyr
 #' @export
-processGEEraw <- function(datName, joinOriginal=TRUE) {
+processGEEraw <- function(datName) {
   #not supposed to do this inside a package, but can't get any of the suggested methods to work
   #library(dplyr)
   #select <- dplyr::select
 
-  #---- common variable header ----#
-  scratchP <- glue('tempfolder_{datName}') #path of temporary files used in annotation
-  datCopyFN <- glue('{datName}_original.csv') #file name for copy of original file
-  #---- ----#
-
   datAnno <- annoRawToWide(datName)
   envLabs <- names(select(datAnno,-anno_id))
-  origPN <- file.path(scratchP,datCopyFN)
-
-  if(file.exists(origPN)) {
-    #get the original file, which has anno_id
-    message("Joining to original file.")
-    datOrig <- read_csv(origPN,col_types=cols())
-
-    #join datAnno to the original datName
-    dat <- datOrig %>%
-      left_join(datAnno, by='anno_id') %>%
-      select(-anno_id)
-  } else {
-    message("Not joining results to the originally uploaded file, because this file can't be found.")
-    dat <- datAnno
-  }
 
   message('Performing low-level transformation of variables.')
   for(envLab in envLabs) {
@@ -64,18 +42,18 @@ processGEEraw <- function(datName, joinOriginal=TRUE) {
       if(envId %in% c('MODIS/006/MOD13Q1','MODIS/006/MYD13Q1')) { #MODIS EVI variables
         # convert MODIS EVI units to range 0-1
         message(envId)
-        dat <- dat %>%
+        datAnno <- datAnno %>%
           mutate(!!envLab := transMODIS_EVI(!!as.name(envLab)))
       } else if(envId  %in% c('MODIS/006/MOD11A2','MODIS/006/MYD11A2')) { #MODIS LST variables
         # convert MODIS LST units to degrees C
         message(envId)
-        dat <- dat %>%
+        datAnno <- datAnno %>%
           mutate(!!envLab := transMODIS_LST(!!as.name(envLab)))
       }
     }
   }
 
   message('Processing raw GEE data was successful.')
-  return(dat)
+  return(datAnno)
 
 }

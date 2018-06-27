@@ -1,5 +1,5 @@
 #' @importFrom glue glue
-#' @importFrom readr read_csv
+#' @import readr
 #' @export
 annoRawToWide <- function(datName) {
 
@@ -21,6 +21,7 @@ annoRawToWide <- function(datName) {
                   env_val=col_double(),
                   .geo=col_skip())
 
+  message('Combining files...')
   annoRawList <- lapply(rawFiles,function(fileName) {
     dat0 <- read_csv(fileName, col_types=colTypes)
     if(!('env_val' %in% colnames(dat0))) {
