@@ -24,9 +24,6 @@ transMODIS_EVI <- function(raw) {
 #' @import tidyr
 #' @export
 processGEEraw <- function(datName) {
-  #not supposed to do this inside a package, but can't get any of the suggested methods to work
-  #library(dplyr)
-  #select <- dplyr::select
 
   datAnno <- annoRawToWide(datName)
   envLabs <- names(select(datAnno,-anno_id))

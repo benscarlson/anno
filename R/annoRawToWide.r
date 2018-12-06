@@ -1,29 +1,33 @@
-#' @importFrom glue glue
-#' @import readr
+#' Combines GEE formatted CSV file output and translates into wide format
+#'
+#' @param rawPath \code{string} Path to raw GEE result files
 #' @export
-annoRawToWide <- function(datName) {
+annoRawToWide <- function(rawPath) {
+
+  #TODO: I'm importing dplyr and tidyr in some other file. Once I'm not importing, need to update this function.
+  if(FALSE) {rawPath <- '~/projects/whitestork/results/stpp_models/albert_sum13/data/tempfolder_albert_sum13/raw'}
 
   #if splitting up annotation of an single variable (i.e. EVI) into multiple runs/files, can still
   #just run this code, because all files are just stacked on top of each other.
 
   #---- common variable header ----#
-  scratchP <- glue('tempfolder_{datName}') #path of temporary files used in annotation
-  rawP <- 'raw'
+  #scratchP <- glue::glue('tempfolder_{datName}') #path of temporary files used in annotation
+  #rawP <- 'raw'
   #---- ----#
 
-  message(glue('Reading files from {file.path(scratchP,rawP)}'))
-  rawFiles <- list.files(file.path(scratchP,rawP),full.names=TRUE)
+  message(glue::glue('Reading files from {rawPath}'))
+  rawFiles <- list.files(rawPath,full.names=TRUE)
   message('Found the following raw files...')
   print(rawFiles)
 
-  colTypes = cols(`system:index`=col_skip(),
-                  anno_id=col_double(),
-                  env_val=col_double(),
-                  .geo=col_skip())
+  colTypes = readr::cols(`system:index`=readr::col_skip(),
+                  anno_id=readr::col_double(),
+                  env_val=readr::col_double(),
+                  .geo=readr::col_skip())
 
   message('Combining files...')
   annoRawList <- lapply(rawFiles,function(fileName) {
-    dat0 <- read_csv(fileName, col_types=colTypes)
+    dat0 <- readr::read_csv(fileName, col_types=colTypes)
     if(!('env_val' %in% colnames(dat0))) {
       message(sprintf('Env values missing for %s, not including in results',unique(dat0$env_label)))
       dat0 <- NULL

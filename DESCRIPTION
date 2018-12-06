@@ -18,4 +18,4 @@ Imports:
   sp,
   tidyr,
   tibble
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
