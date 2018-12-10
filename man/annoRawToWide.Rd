@@ -4,10 +4,10 @@
 \alias{annoRawToWide}
 \title{Combines GEE formatted CSV file output and translates into wide format}
 \usage{
-annoRawToWide(rawPath)
+annoRawToWide(rawP)
 }
 \arguments{
-\item{rawPath}{\code{string} Path to raw GEE result files}
+\item{rawP}{Path to raw GEE result files}
 }
 \description{
 Combines GEE formatted CSV file output and translates into wide format
