@@ -6,19 +6,19 @@
 1) Saves a copy of the data, but with anno_id added as a column.
 2) Saves a shapefile formatted for upload to GEE.}
 \usage{
-prepForGEE(dat, datAnnoIdPF, geeShapefileP, ptsPerGrpReq = NULL,
-  extraFields = NULL)
+prepForGEE(datPF, annoPF = NULL, shpDSN = NULL,
+  ptsPerGrp = getOption("anno.ptsPerGrp"), extFields = NULL)
 }
 \arguments{
-\item{dat}{Dataset}
+\item{datPF}{Path to dataset to annotate.}
 
-\item{datAnnoIdPF}{Path and Filename specifying where to save original dataset, with anno_id added.}
+\item{annoPF}{Path and Filename specifying where to save original dataset, with anno_id added.}
 
-\item{geeShapefileP}{Path of output shapefile, prepped for GEE. Final folder will be the name of the shapefile.}
+\item{shpDSN}{Path of output shapefile, prepped for GEE. Final folder will be the name of the shapefile.}
 
-\item{ptsPerGrpReq}{Requested number of points in each annotation group.}
+\item{ptsPerGrp}{Requested number of points in each annotation group.}
 
-\item{extraFields}{Fields, in addition to the default fields, that should be uploaded to GEE.}
+\item{extFields}{Fields, in addition to the default fields, that should be uploaded to GEE.}
 }
 \description{
 Preps dataset for annotation in GEE.

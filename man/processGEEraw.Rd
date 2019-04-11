@@ -5,18 +5,20 @@
 \title{High-level function that processes raw GEE results.
 Converts to wide format (one variable per column).
 Converts units if necessary.
-Optionally joins to an existing file (file must have anno_id).}
+Joins to an existing file (file must have anno_id).}
 \usage{
-processGEEraw(rawP, joinToDat = NULL)
+processGEEraw(datAnnoPF, outPF = NULL, rawP = NULL)
 }
 \arguments{
-\item{rawP}{Path to raw GEE result files}
+\item{datAnnoPF}{\code{character} Path and filename of the file that the anno data should be joined to. Should have anno_id field.}
 
-\item{joinToPF}{Path and filename of the file that the anno data should be joined to. Should have anno_id field.}
+\item{outPF}{\code{character} Path and filename of output file. Will write over datAnnoPF if null}
+
+\item{rawP}{\code{character} Path to raw GEE result files. If NULL, assumes ./raw}
 }
 \description{
 High-level function that processes raw GEE results.
 Converts to wide format (one variable per column).
 Converts units if necessary.
-Optionally joins to an existing file (file must have anno_id).
+Joins to an existing file (file must have anno_id).
 }

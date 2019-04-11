@@ -2,28 +2,39 @@
 #' High-level function that processes raw GEE results.
 #' Converts to wide format (one variable per column).
 #' Converts units if necessary.
-#' Optionally joins to an existing file (file must have anno_id).
+#' Joins to an existing file (file must have anno_id).
 #'
-#' @param rawP Path to raw GEE result files
-#' @param joinToPF Path and filename of the file that the anno data should be joined to. Should have anno_id field.
+#' @param datAnnoPF \code{character} Path and filename of the file that the anno data should be joined to. Should have anno_id field.
+#' @param outPF \code{character} Path and filename of output file. Will write over datAnnoPF if null
+#' @param rawP \code{character} Path to raw GEE result files. If NULL, assumes ./raw
 #' @export
 #'
-processGEEraw <- function(rawP,joinToDat=NULL) {
+processGEEraw <- function(datAnnoPF,outPF=NULL,rawP=NULL) {
+  #TODO: could update the function so that datAnnoPF is
+  # Then, there is no joining to an existing dataset, just save it
+  # In this case, if datAnnoPF is null, then outPF can't be null.
 
-  datAnno <- annoRawToWide(rawP)
-  datAnno <- convertUnits(datAnno)
-
-  if(!is.null(joinToDat)) {
-    #Join to specified dataset. Must have anno_id.
-    message(glue::glue("Joining annotated data..."))
-
-    #join annotated data to specified file (usually the original data)
-    datAnno <- joinToDat %>%
-      dplyr::left_join(datAnno, by='anno_id')
-  } else {
-    datAnno <- datAnno
+  if(is.null(rawP)) {
+    rawP <- getOption('anno.rawP')
   }
 
-  message('Processing raw GEE data was successful.')
-  return(datAnno)
+  geeAnno <- annoRawToWide(rawP) %>%
+    convertUnits()
+
+  message("Joining annotated data...")
+
+  #need to increase default number of guessed rows in cases where there are a lot of nulls
+  datAnno <- readr::read_csv(datAnnoPF,col_type=readr::cols(),guess_max=nrow(geeAnno)/5)
+
+  # join annotated variables to the original dataset (must have anno_id)
+  datAnno <- datAnno %>%
+    dplyr::left_join(geeAnno, by='anno_id')
+
+  if(is.null(outPF)) {
+    outPF <- datAnnoPF
+  }
+
+  message(glue::glue('Writing dataset...'))
+  readr::write_csv(datAnno,outPF)
+
 }
