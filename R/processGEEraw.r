@@ -10,9 +10,6 @@
 #' @export
 #'
 processGEEraw <- function(datAnnoPF,outPF=NULL,rawP=NULL) {
-  #TODO: could update the function so that datAnnoPF is
-  # Then, there is no joining to an existing dataset, just save it
-  # In this case, if datAnnoPF is null, then outPF can't be null.
 
   if(is.null(rawP)) {
     rawP <- getOption('anno.rawP')
@@ -24,7 +21,7 @@ processGEEraw <- function(datAnnoPF,outPF=NULL,rawP=NULL) {
   message("Joining annotated data...")
 
   #need to increase default number of guessed rows in cases where there are a lot of nulls
-  datAnno <- readr::read_csv(datAnnoPF,col_type=readr::cols(),guess_max=nrow(geeAnno)/5)
+  datAnno <- readr::read_csv(datAnnoPF,col_type=readr::cols(),guess_max=as.integer(nrow(geeAnno)/5))
 
   # join annotated variables to the original dataset (must have anno_id)
   datAnno <- datAnno %>%
