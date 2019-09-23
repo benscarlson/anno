@@ -1,6 +1,6 @@
 Example use
 
-````
+````bash
 datName=mydat
 
 cd analysis
