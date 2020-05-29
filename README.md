@@ -16,3 +16,7 @@ annoimport -d $dat -g $gcsimport -a $asset
 annoprocess -d $dat -g $gcsanno
 annocleanup -d $dat -i $gcsimport -g $gcsanno
 ````
+
+Other notes
+* Uploaded dataset should have anno_id that is a unique index for each feature
+* Annotated environmental value should have column name env_val
