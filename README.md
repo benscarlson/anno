@@ -17,17 +17,18 @@ annoprocess -d $dat -g $gcsanno
 annocleanup -d $dat -i $gcsimport -g $gcsanno
 ````
 
-## annoprep 
+### annoprep 
 
 * adds anno_id to the dataset
 * subsets fields to just those that should be uploaded to gee
 * saves file as <dat>_forgee.csv (can now import csv to gee)
   
-## annoimport
+### annoimport
 
 * uploads file to gcs
 * imports from gcs to gee
 
-Other notes
+### Other notes
+
 * Uploaded dataset should have anno_id that is a unique index for each feature
 * Annotated environmental value should have column name env_val
