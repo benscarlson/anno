@@ -16,6 +16,10 @@ annoimport -d $dat -g $gcsimport -a $asset
 annoprocess -d $dat -g $gcsanno
 annocleanup -d $dat -i $gcsimport -g $gcsanno
 ````
+### workflow
+
+* Each command accepts the same data set name as input (e.g. mydat.csv). However, the commands parse this name and often build different input/output file names.
+* annoimport 
 
 ### annoprep 
 
