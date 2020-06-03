@@ -32,6 +32,11 @@ annocleanup -d $dat -i $gcsimport -g $gcsanno
 * uploads file to gcs
 * imports from gcs to gee
 
+### annoprocess
+
+* downloads files to ./raw folder
+* calls processGEEraw.r to merge raw files, convert units, join back to \*\_anno.csv file
+
 ### Other notes
 
 * Uploaded dataset should have anno_id that is a unique index for each feature
