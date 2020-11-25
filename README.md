@@ -1,4 +1,16 @@
-Example use
+### Setup
+
+Build package
+
+`devtools::document(); devtools::build()`
+
+Install package
+
+`R CMD INSTALL ~/projects/anno_0.1.0.tar.gz`
+
+See inst/scripts/setup.sh for commands to put anno scripts on your path
+
+### Example use
 
 ````bash
 datName=mydat
