@@ -39,7 +39,7 @@ annoRawToWide <- function(rawP) {
 
   dups <- annoRaw %>%
     dplyr::group_by(anno_id,env_label) %>%
-    dplyr::summarize(num=n()) %>%
+    dplyr::summarize(num=dplyr::n()) %>%
     dplyr::filter(num > 1) %>%
     nrow()
 
@@ -47,7 +47,7 @@ annoRawToWide <- function(rawP) {
     message('No duplicates')
     annoMean <- annoRaw %>% dplyr::select(-env_id,-image_id)
   } else {
-    message('Duplicates found, taking mean')
+    message(glue::glue('{dups} duplicates found, taking mean'))
     annoMean <- annoRaw %>%
       dplyr::group_by(anno_id,env_label) %>%
       dplyr::summarize(env_val=mean(env_val,na.rm=TRUE)) %>%
